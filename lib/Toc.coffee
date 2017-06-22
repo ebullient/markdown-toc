@@ -19,7 +19,6 @@ class Toc
           at._deleteToc()
           at.editor.setTextInBufferRange [[at.open,0], [at.open,0]], at._createToc()
 
-
   # ----------------------------------------------------------------------------
   # main methods (highest logic level)
 
@@ -28,21 +27,15 @@ class Toc
     if @_hasToc()
       @_deleteToc()
       @editor.setTextInBufferRange [[@open,0], [@open,0]], @_createToc()
-    @editor.insertText @_createToc()
-
-
-  update: ->
-    if @_hasToc()
-      @_deleteToc()
-      @editor.setTextInBufferRange [[@open,0], [@open,0]], @_createToc()
     else
       @editor.insertText @_createToc()
 
+  update: ->
+    @_createToc()
 
   delete: ->
     if @_hasToc()
       @_deleteToc()
-
 
   autosave: ->
     if @_hasToc()
@@ -54,8 +47,6 @@ class Toc
       @_deleteToc()
     else
       @editor.insertText @_createToc()
-
-
 
   # ----------------------------------------------------------------------------
 
@@ -82,7 +73,8 @@ class Toc
       if @open isnt false and @close isnt false
         if options isnt undefined
           @__updateOptions options
-          return true
+        return true
+
     return false
 
 
@@ -136,7 +128,7 @@ class Toc
     for own i, item of @list
       row = []
       for tab in [depthFrom..item.depth] when tab > depthFrom
-        row.push "\t"
+        row.push "  "
       if @options.orderedList is 1
         row.push ++indicesOfDepth[item.depth-1] + ". "
         indicesOfDepth = indicesOfDepth.map((value, index) -> if index < item.depth then value else 0)
